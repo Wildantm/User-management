@@ -28,26 +28,35 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-       
-             $request->validate([
-                'npk' => ['required', 'string', 'max:20', 'unique:users'],
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-                'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            ]);
+{
+    $request->validate([
+        'npk' => ['required', 'string', 'max:20', 'unique:users'],
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+        'nohp' => ['required', 'digit_between:10-15', 'max:15'],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        'role' => ['required', 'in:user,admin'],
+    ], [
+        'nohp.digits_between' => 'Nomor HP harus berupa angka 10 hingga 15 digit.',
+        'email.unique' => 'Email ini sudah digunakan oleh user lain.',
+        'npk.unique' => 'NPK sudah terdaftar.',
+        ]);
 
-            $user = User::create([
-                'npk' => $request->npk,
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+    $user = User::create([
+        'npk' => $request->npk,
+        'name' => $request->name,
+        'email' => $request->email,
+        'nohp' => $request->nohp,
+        'role' => $request->role,
+        'password' => Hash::make($request->password),
+    ]);
 
-        event(new Registered($user));
+    event(new Registered($user));
 
-        Auth::login($user);
+    // Jangan login sebagai user baru
+    // Auth::login($user); ← ini dihapus
 
-        return redirect(route('dashboard', absolute: false));
-    }
+    return redirect()->back()->with('success', 'User berhasil didaftarkan.');
+}
+
 }
