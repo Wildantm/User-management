@@ -5,7 +5,16 @@
     <h1>Add Plant</h1>
 
 
-
+{{-- Alert kalau error --}}
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 <form action="{{ route('plant.store') }}" method="POST">
         @csrf
         <div class="mb-3">

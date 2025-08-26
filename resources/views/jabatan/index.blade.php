@@ -12,10 +12,8 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Plant</th>
-                <th>Departement</th>
                 <th>Jabatan</th>
-                <th>Lokasi</th>
+
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,10 +21,7 @@
             @foreach($jabatan as $jab)
             <tr>
 
-                <td>{{ $jab->departement->plant->nama_plant ?? '-' }}</td> 
-                <td>{{ $jab->departement->nama_departement }}</td>
                 <td>{{ $jab->nama_jabatan ?? '-' }}</td>
-                <td>{{ $jab->departement->plant->lokasi ?? '-' }}</td> 
                 <td>
                    <a href="{{ route('jabatan.edit', $jab->id) }}" class="btn btn-warning btn-sm">Edit</a>
 

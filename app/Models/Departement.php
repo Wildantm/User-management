@@ -4,25 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Controllers\PlantController;
-
+use App\Models\User;
 class Departement extends Model
 {
     use HasFactory;
-
+    protected $table = 'departements';
     // Tentukan kolom yang bisa diisi massal
     protected $fillable = [
-        'nama_departement', 
-         'plant_id'];
+        'nama_departement',
+    ];
 
-    public function plant()
-    {
-        return $this->belongsTo(Plant::class, 'plant_id');
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_npk', 'npk');
-    }
+  
 }
 
 

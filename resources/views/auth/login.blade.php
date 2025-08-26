@@ -46,7 +46,7 @@
         </form>
 
         <div class="text-center mt-3">
-            <small>Don't have an account? <a href="{{ route('register') }}">Register</a></small>
+            {{-- <small>Don't have an account? <a href="{{ route('#') }}">Register</a></small> --}}
         </div>
     </div>
 </div>

@@ -9,21 +9,11 @@ class Jabatan extends Model
 {
     use HasFactory;
 
+    protected $table = 'jabatans';
+
+     // Tentukan kolom yang bisa diisi massal
     protected $fillable = [
         'nama_jabatan',
-        'departement_id',
     ];
 
-
-    public function departement()
-    {
-        return $this->belongsTo(Departement::class);
-    }
-    
-    //akses langsung ke Plant lewat Departement
-
-    public function plant()
-    {
-        return $this->departement->plant;
-    }
 }

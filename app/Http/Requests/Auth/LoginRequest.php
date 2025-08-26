@@ -88,4 +88,13 @@ class LoginRequest extends FormRequest
     {
         return Str::transliterate(Str::lower($this->string('login')).'|'.$this->ip());
     }
+    protected function authenticated(Request $request, $user)
+    {
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('/users/dashboard');
+    }
+
 }

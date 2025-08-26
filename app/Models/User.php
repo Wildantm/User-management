@@ -25,7 +25,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nohp',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'no_bpjs',
+        'no_ktp',
+        'no_npwp',
         'role',
+        'plant_id',
+        'departement_id',
+        'jabatan_id',
     ];
 
     /**
@@ -37,10 +46,19 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    public function Plant()
+   
+    public function plant() 
     {
         return $this->belongsTo(Plant::class);
+    }
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class);
+    }
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class);
     }
 
 
@@ -56,4 +74,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
 }
+

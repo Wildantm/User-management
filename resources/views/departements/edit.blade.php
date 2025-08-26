@@ -11,15 +11,6 @@
         <input type="text" name="nama_departement" 
        value="{{ $departement->nama_departement }}" class="form-control">
 
-<select name="plant_id" class="form-control">
-    @foreach($plant as $p)
-        <option value="{{ $p->id }}" 
-            {{ $departement->plant_id == $p->id ? 'selected' : '' }}>
-            {{ $p->nama_plant }}
-        </option>
-    @endforeach
-</select>
-        
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="{{ route('departements.index') }}" class="btn btn-secondary">Back</a>
     </form>

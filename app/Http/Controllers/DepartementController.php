@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Departement;
 use Illuminate\Http\Request;
-use App\Models\Plant;
-use App\Models\Jabatan;
+use Illuminate\Support\Facades\Auth;
+
 class DepartementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $departements = Departement::with('plant')->get(); // ambil plant sekalian
+    { 
+        $departements = Departement::all(); // mengambil semua data departement 
+
     return view('departements.index', compact('departements'));
     }
 
@@ -23,26 +24,21 @@ class DepartementController extends Controller
      */
     public function create()
     {
-        $plants = Plant::all();
-        return view('departements.create', compact('plants'));
+        return view('departements.create');
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        
-        $request->validate([
-            'nama_departement' => 'required',
-            'plant_id' => 'required|exists:plants,id'
-        ]);
+    
 
-        Departement::create([
-            'nama_departement' => $request->nama_departement,
-            'plant_id' => $request->plant_id,
-        ]);
-            return redirect()->route('departements.index')->with('success','Departement berhasil ditambahkan');
+    $request->validate(['nama_departement' => ['required', 'string', 'max:255'],
+    ]);
+
+    Departement::create(['nama_departement' => $request->nama_departement,
+    ]);
+    return redirect()->route('departements.index')->with('success','Departement berhasil ditambahkan');
     }
 
     /**
@@ -59,8 +55,7 @@ class DepartementController extends Controller
     public function edit(string $id)
     {
         $departement = Departement::findOrFail($id);
-        $plant = Plant::all();
-        return view('departements.edit', compact('departement', 'plant'));
+        return view('departements.edit', compact('departement'));
     }
 
     /**
@@ -70,12 +65,11 @@ class DepartementController extends Controller
     {
         $validated = $request->validate([
             'nama_departement' => 'required|string|max:255',
-            'plant_id' => 'required|exists:plants,id',
         ]);
 
         $departement->update($validated);
 
-        return redirect()->route('departements.index')->with('succcess', 'Departement berhasil diubah');
+        return redirect()->route('departements.index')->with('success', 'Departement berhasil diubah');
     }
 
     /**
@@ -88,10 +82,5 @@ class DepartementController extends Controller
 
     return redirect()->route('departements.index')
                      ->with('success', 'Departement berhasil dihapus');
-    }
-
-    public function jabatans()
-    {
-        return $this->hasMany(Jabatan::class);
     }
 }

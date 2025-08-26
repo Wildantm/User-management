@@ -7,16 +7,6 @@
     {{-- Profil User --}}   
 <form action="{{ route('departements.store') }}" method="POST">
         @csrf
-
-        <div class="mb-3">
-    <label for="plant_id" class="form-label">Plant</label>
-    <select name="plant_id" class="form-control" required>
-        <option value="">-- Pilih Plant --</option>
-        @foreach($plants as $p)
-            <option value="{{ $p->id }}">{{ $p->nama_plant }}</option>
-        @endforeach
-    </select>
-</div>
         <div class="mb-3">
             <label for="nama_departement" class="form-label">Nama Departement</label>
             <input type="text" name="nama_departement" class="form-control" required>

@@ -14,7 +14,7 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $jabatan = Jabatan::with('departement.plant')->get();
+        $jabatan = Jabatan::all();
         return view('jabatan.index', compact('jabatan'));
     }
 
@@ -23,8 +23,7 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        $departements = Departement::with('plant')->get();
-        return view('jabatan.create', compact('departements'));
+        return view('jabatan.create');
     }
 
     /**
@@ -32,14 +31,11 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama_jabatan' => 'required|string|max:255',
-            'departement_id' => 'required|exists:departements,id',
+            $request->validate(['nama_jabatan' => 'required|string|max:255'
         ]);
 
         Jabatan::create([
             'nama_jabatan' => $request->nama_jabatan,
-            'departement_id' => $request->departement_id,
         ]);
 
         return redirect()->route('jabatan.index')->with('success', 'Jabatan berhasil ditambahkan');
@@ -59,9 +55,8 @@ class JabatanController extends Controller
     public function edit(string $id)
     {
         $jabatan = Jabatan::findOrFail($id);
-        $departements = Departement::with('plant')->get();
         
-        return view('jabatan.edit', compact('jabatan', 'departements'));
+        return view('jabatan.edit', compact('jabatan'));
 
     }
 
@@ -71,8 +66,7 @@ class JabatanController extends Controller
     public function update(Request $request, Jabatan $jabatan)
     {
         $validated = $request->validate([
-            'nama_jabatan' => 'required|string|max:255',
-            'departement_id' => 'required|exists:departements,id',
+            'nama_jabatan' => 'required,string,max:255'
         ]);
 
         $jabatan->update($validated);

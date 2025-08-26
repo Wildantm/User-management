@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('jabatans', function (Blueprint $table) {
             $table->id();
             $table->string('nama_jabatan');
-            $table->foreignId('departement_id')->constrained('departements')->onDelete('cascade');
             $table->timestamps();
         });
     }

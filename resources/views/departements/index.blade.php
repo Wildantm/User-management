@@ -22,9 +22,9 @@
             @foreach($departements as $dept)
             <tr>
 
-                <td>{{ $dept->plant->nama_plant ?? '-' }}</td> 
-                <td>{{ $dept->name ?? $dept->nama_departement }}</td>
-                <td>{{ $dept->plant->lokasi ?? '-' }}</td> 
+                <td>{{ $user->plant->nama_plant ?? '-' }}</td> 
+                <td>{{ $user->name ?? $dept->nama_departement }}</td>
+                <td>{{ $user->plant->lokasi ?? '-' }}</td> 
                 <td>
                    <a href="{{ route('departements.edit', $dept->id) }}" class="btn btn-warning btn-sm">Edit</a>
 

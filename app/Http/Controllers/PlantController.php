@@ -34,8 +34,9 @@ class PlantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_plant' => ['required', 'string', 'max:255'],
+            'nama_plant' => ['required', 'string', 'max:255', 'unique:plants,nama_plant'],
             'lokasi' => ['required', 'string', 'max:255'],
+        ], ['nama_plant.unique' => 'Nama plant sudah ada.',
         ]);
 
         $plant = Plant::create($request->all());
