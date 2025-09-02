@@ -36,7 +36,7 @@
             <select name="departement_id" class="form-select">
                 <option value="">-- Pilih Departemen --</option>
                 @foreach($departements as $departement)
-                    <option value="{{ $departement->id }}" {{ old('departement_id', $user->departement_id) == $departement->id ? 'selected' : '' }}>
+                    <option value="{{ $departement->id }}" {{ old('departement_id', $user->departements_id) == $departement->id ? 'selected' : '' }}>
                         {{ $departement->nama_departement }}
                     </option>
                 @endforeach
@@ -62,6 +62,11 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">No HP</label>
+            <input type="text" name="nohp" class="form-control" value="{{ old('nohp', $user->nohp) }}">
+        </div>
+
+        {{-- <div class="mb-3">
             <label class="form-label">Tempat Lahir</label>
             <input type="text" name="tempat_lahir" class="form-control" value="{{ old('tempat_lahir', $user->tempat_lahir) }}">
         </div>
@@ -71,12 +76,9 @@
             <input type="date" name="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}">
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">No HP</label>
-            <input type="text" name="nohp" class="form-control" value="{{ old('nohp', $user->nohp) }}">
-        </div>
+        
 
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label class="form-label">No BPJS</label>
             <input type="text" name="no_bpjs" class="form-control" value="{{ old('no_bpjs', $user->no_bpjs) }}">
         </div>
@@ -89,7 +91,7 @@
         <div class="mb-3">
             <label class="form-label">No NPWP</label>
             <input type="text" name="no_npwp" class="form-control" value="{{ old('no_npwp', $user->no_npwp) }}">
-        </div>
+        </div> --}}
 
         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>

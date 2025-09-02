@@ -12,60 +12,73 @@ use Illuminate\Validation\ValidationException;
 class LoginRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     *  Menentukan apakah request ini diizinkan
      */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+    /** 
+     * Aturan validasi untuk form login
+     * 
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'login' => ['required', 'string'],
+            'login' => ['required', 'string'], // bisa email atau npk
             'password' => ['required', 'string'],
         ];
     }
 
+
     /**
-     * Attempt to authenticate the request's credentials.
-     *
+     * Mencoba untuk mengautentikasi pengguna berdasarakan login dan password
+     * 
      * @throws \Illuminate\Validation\ValidationException
      */
+
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
+        
         $login = $this->input('login');
         $password = $this->input('password');
         $remember = $this->boolean('remember');
 
+        // cek apakah login berupa email atau npk
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'npk';
 
-        if (! Auth::attempt([$field => $login , 'password' => $password],'remember')) {
+        $user = \App\Models\User::where($field, $login)->first();
+
+        if (!$user || !\Hash::check($password, $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'login' => trans('auth.failed'),
+                'login' => __('auth.failed'),
             ]);
         }
+
+        if (!$user->is_active){
+            throw ValidationException::withMessages([
+                'login' => 'Akun Anda telah dinonaktifkan',
+            ]);
+        }
+
+        Auth::login($user, $remember);
 
         RateLimiter::clear($this->throttleKey());
     }
 
     /**
-     * Ensure the login request is not rate limited.
-     *
+     * Memastikan Request tidak melebihi batas limit
+     * 
      * @throws \Illuminate\Validation\ValidationException
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -74,7 +87,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'login' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -82,19 +95,13 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Get the rate limiting throttle key for the request.
+     * Menghasilkan throttle key unik berdasarkan login dan IP
+     * 
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('login')).'|'.$this->ip());
+        return Str::transliterate(
+            Str::lower($this->string('login')).'|'.$this->ip()
+        );
     }
-    protected function authenticated(Request $request, $user)
-    {
-    if ($user->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-
-    return redirect()->route('/users/dashboard');
-    }
-
 }

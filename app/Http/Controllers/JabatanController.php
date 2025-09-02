@@ -38,7 +38,7 @@ class JabatanController extends Controller
             'nama_jabatan' => $request->nama_jabatan,
         ]);
 
-        return redirect()->route('jabatan.index')->with('success', 'Jabatan berhasil ditambahkan');
+        return redirect()->route('jabatans.index')->with('success', 'Jabatan berhasil ditambahkan');
     }
 
     /**

@@ -17,6 +17,9 @@ class Authenticate
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
+            if ($request->expectJson()){
+                abort(401);
+            }
             return redirect()->route('login');
         }
         return $next($request);

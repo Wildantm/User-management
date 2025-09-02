@@ -12,36 +12,50 @@ use Illuminate\View\View;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Menampilkan halaman login
      */
     public function create(): View
     {
         return view('auth.login');
     }
 
+
     /**
-     * Handle an incoming authentication request.
+     * Menangani Proses Autentikasi
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $request->session()->regenerate(); //regenerasi session
 
-        $user = $request->user();
+        $user = Auth::user(); //Ambil user yang sudah login
 
-        // 🔁 Redirect sesuai role
-        if ($user->role === 'admin') {
-            return redirect()->intended('/admin');
+        if (!$user){
+            return redirect()->route('login')->withErrors(['npk' => 'User tidak dikenali']);
         }
+        $role = $user->getRoleNames()->first();// Mengakses nama role melalui relasi
 
-        return redirect()->intended('/users/dashboard');
+        // Redirect berdasarkan role user
+        switch ($role) {
+            case 'supervisor':
+                return redirect()->route('supervisor.dashboard');
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'user':
+                return redirect()->route('users.dashboard');
+            case 'section_head':
+                return redirect()->route('sectionhead.dashboard');
+            default:
+                Auth::logout();
+                return redirect()->route('login')->withErrors('Role tidak dikenali.');
+        }
     }
 
-
     /**
-     * Destroy an authenticated session.
+     * Menghancurkan sesi autentikasi user(logout)
      */
+
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

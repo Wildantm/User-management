@@ -14,6 +14,10 @@ class Departement extends Model
         'nama_departement',
     ];
 
+    public function plant()
+    {
+        return $this->belongsTo(Plant::class);
+    }
   
 }
 

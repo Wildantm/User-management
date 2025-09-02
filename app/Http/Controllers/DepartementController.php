@@ -83,4 +83,10 @@ class DepartementController extends Controller
     return redirect()->route('departements.index')
                      ->with('success', 'Departement berhasil dihapus');
     }
+
+    public function byPlant($plantId)
+    {
+        $departements = Departement::where('plant_id', $plantId)->get();
+        return response()->json($departements);
+    }
 }

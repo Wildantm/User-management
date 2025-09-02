@@ -5,7 +5,7 @@
     <h1>Add Jabatan</h1>
 
     {{-- Profil User --}}   
-<form action="{{ route('jabatan.store') }}" method="POST">
+<form action="{{ route('jabatans.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">
@@ -13,7 +13,7 @@
             <input type="text" name="nama_jabatan" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
-        <a href="{{ route('jabatan.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('jabatans.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
 @endsection

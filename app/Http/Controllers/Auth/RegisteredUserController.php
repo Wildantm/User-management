@@ -32,23 +32,22 @@ class RegisteredUserController extends Controller
     $request->validate([
         'npk' => ['required', 'string', 'max:20', 'unique:users'],
         'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-        'nohp' => ['required', 'digit_between:10-15', 'max:15'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+        'nohp' => ['required', 'digits_between:10,15', 'max:15'],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        'role' => ['required', 'in:user,admin'],
+        'role' => ['required', 'in:user,admin,supervisor,section_head'],
     ], [
         'nohp.digits_between' => 'Nomor HP harus berupa angka 10 hingga 15 digit.',
         'email.unique' => 'Email ini sudah digunakan oleh user lain.',
         'npk.unique' => 'NPK sudah terdaftar.',
-        ]);
-
+    ]);
     $user = User::create([
         'npk' => $request->npk,
         'name' => $request->name,
         'email' => $request->email,
         'nohp' => $request->nohp,
-        'role' => $request->role,
         'password' => Hash::make($request->password),
+        'role' => $request->role,
     ]);
 
     event(new Registered($user));

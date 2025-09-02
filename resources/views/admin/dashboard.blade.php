@@ -46,7 +46,7 @@
             <div class="card shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Jabatan</h5>
-                    <a href="{{ route('jabatan.index') }}" class="btn btn-primary" style="width:150px;">Go to Jabatan</a>
+                    <a href="{{ route('jabatans.index') }}" class="btn btn-primary" style="width:150px;">Go to Jabatan</a>
                 </div>
             </div>
         </div>

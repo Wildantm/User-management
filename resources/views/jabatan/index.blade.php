@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <h1>Jabatan</h1>
-    <a href="{{ route('jabatan.create') }}" class="btn btn-primary mb-3">Add Jabatan</a>
+    <a href="{{ route('jabatans.create') }}" class="btn btn-primary mb-3">Add Jabatan</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -23,9 +23,9 @@
 
                 <td>{{ $jab->nama_jabatan ?? '-' }}</td>
                 <td>
-                   <a href="{{ route('jabatan.edit', $jab->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                   <a href="{{ route('jabatans.edit', $jab->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
-                    <form action="{{ route('jabatan.destroy', $jab->id) }}" method="POST" style="display:inline;">
+                    <form action="{{ route('jabatans.destroy', $jab->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>

@@ -100,14 +100,20 @@
             <label>Confirm Password</label>
             <input type="password" name="password_confirmation" class="form-control" required>
         </div>
+        @php
+            $selectedRole = old('role') ?? (isset($user) ? $user->getRoleNames()->first() : null);
+        @endphp
+         <div class="mb-3">
+            <label class="form-label">Role</label>
+                            <select name="role" class="form-select">
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->name }}" {{ $selectedRole ==  $role->name ? 'selected' : '' }}>
+                                        {{ \Illuminate\Support\Str::title(str_replace('_', ' ', $role->name)) }}
 
-        <div class="mb-3">
-            <label>Role</label>
-            <select name="role" class="form-select" required>
-                <option value="">-- Pilih Role --</option>
-                <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-            </select>
+                                    </option>
+                                @endforeach
+                            </select>
+            @error('role') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
         <button class="btn btn-primary">Register User</button>

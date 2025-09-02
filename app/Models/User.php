@@ -6,12 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    use HasRoles;
 
+
+    protected $table = 'users';
     protected $primaryKey = 'npk';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -31,10 +35,17 @@ class User extends Authenticatable
         'no_bpjs',
         'no_ktp',
         'no_npwp',
-        'role',
         'plant_id',
         'departement_id',
         'jabatan_id',
+        'is_active',
+    ];
+
+
+    
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -47,6 +58,12 @@ class User extends Authenticatable
         'remember_token',
     ];
    
+    public function getRouteKeyName()
+    {
+        return 'npk'; // atau kolom lain yang Anda inginkan
+    }
+
+    
     public function plant() 
     {
         return $this->belongsTo(Plant::class);
@@ -74,13 +91,27 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    //helper function to check role
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->hasRole('admin');
     }
     public function isUser()
     {
-        return $this->role === 'user';
+        return $this->hasRole('user');
+    }
+    public function isSupervisor()
+    {
+        return $this->hasRole('supervisor');
+    }
+    public function isSectionHead()
+    {
+        return $this->hasRole('section_head');     
     }
 }
 

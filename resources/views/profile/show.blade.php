@@ -11,6 +11,7 @@
             <p><strong>Plant:</strong> {{ $user->plant->nama_plant ?? '-' }}</p>
             <p><strong>Departemen:</strong> {{ $user->departement->nama_departement ?? '-' }}</p>
             <p><strong>Jabatan:</strong> {{ $user->jabatan->nama_jabatan ?? '-' }}</p>
+            <p><strong>Role:</strong> {{ $user->role->role ?? '-' }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
             <p><strong>No. Telepon:</strong> {{ $user->nohp ?? '-' }}</p>
             <p><strong>Alamat:</strong> {{ $user->alamat ?? '-' }}</p>

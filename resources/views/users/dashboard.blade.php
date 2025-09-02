@@ -2,12 +2,18 @@
 
 @section('content')
     <div class="container mt-5">
-        <div class="card">
-            <div class="card-body">
-                <h1>{{ auth()->user()->name }}</h1>
-                <p> {{ auth()->user()->jabatan->nama_jabatan ?? 'No Jabatan Assigned' }}
-                 </br>
-                 {{ auth()->user()->npk }}</p>
+
+    {{-- Profil Pengguna --}}
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="mb-1">{{ auth()->user()->name }}</h2>
+                    <p class="mb-0">
+                        {{ auth()->user()->jabatan->nama_jabatan ?? 'Jabatan belum diatur' }}<br>
+                        {{ auth()->user()->npk }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
