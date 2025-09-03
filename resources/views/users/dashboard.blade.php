@@ -19,7 +19,7 @@
     </div>
 
 
-    <div class="row justify-content-center mb-3">
+    {{-- <div class="row justify-content-center mb-3">
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-body d-flex justify-content-between align-items-center">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 {{-- <a href="{{ route('users.profile.keluarga') }}">Data Keluarga</a> --}}{{-- pakai layout global Bootstrap --}}
 

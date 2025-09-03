@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <h2>Edit Profil</h2>
 
-    <form action="{{ route('users.profile.update', $user->npk) }}" method="POST">
+    <form id="editProfileForm" action="{{ route('users.profile.update', $user->npk) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -36,7 +36,8 @@
             <select name="departement_id" class="form-select">
                 <option value="">-- Pilih Departemen --</option>
                 @foreach($departements as $departement)
-                    <option value="{{ $departement->id }}" {{ old('departement_id', $user->departements_id) == $departement->id ? 'selected' : '' }}>
+                    <option value="{{ $departement->id }}" 
+                        {{ old('departements_id', $user->departement_id) == $departement->id ? 'selected' : '' }}>
                         {{ $departement->nama_departement }}
                     </option>
                 @endforeach
@@ -55,7 +56,6 @@
             </select>
         </div>
 
-
         <div class="mb-3">
             <label class="form-label">Email</label>
             <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}">
@@ -66,34 +66,31 @@
             <input type="text" name="nohp" class="form-control" value="{{ old('nohp', $user->nohp) }}">
         </div>
 
-        {{-- <div class="mb-3">
-            <label class="form-label">Tempat Lahir</label>
-            <input type="text" name="tempat_lahir" class="form-control" value="{{ old('tempat_lahir', $user->tempat_lahir) }}">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}">
-        </div>
-
-        
-
-        {{-- <div class="mb-3">
-            <label class="form-label">No BPJS</label>
-            <input type="text" name="no_bpjs" class="form-control" value="{{ old('no_bpjs', $user->no_bpjs) }}">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">No KTP</label>
-            <input type="text" name="no_ktp" class="form-control" value="{{ old('no_ktp', $user->no_ktp) }}">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">No NPWP</label>
-            <input type="text" name="no_npwp" class="form-control" value="{{ old('no_npwp', $user->no_npwp) }}">
-        </div> --}}
-
-        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        <!-- Tombol Modal Trigger -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmSaveModal">
+            Simpan Perubahan
+        </button>
     </form>
+</div>
+
+<!-- Modal Konfirmasi Simpan -->
+<div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Simpan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menyimpan perubahan pada profil?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('editProfileForm').submit();">
+                    Ya, Simpan
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

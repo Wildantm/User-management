@@ -45,20 +45,32 @@
                     </span>
                 </td>
                 <td>
-                    @if(auth()->user()->hasRole('admin'))
-                        <form action="{{ route('admin.users.toggle-active', ['user' => $user->npk]) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-sm {{ $user->is_active ? 'btn-success' : 'btn-secondary' }} mb-1">
+                @if(auth()->user()->hasRole('admin'))
+                    <form action="{{ route('admin.users.toggle-active', ['user' => $user->npk]) }}" method="POST" id="toggle-form-{{ $user->npk }}">
+                        @csrf
+                        @method('PATCH')
+
+                        <div class="form-check form-switch">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                id="switchCheck_{{ $user->npk }}"
+                                {{ $user->is_active ? 'checked' : '' }}
+                                onchange="document.getElementById('toggle-form-{{ $user->npk }}').submit();"
+                            >
+                            <label class="form-check-label small" for="switchCheck_{{ $user->npk }}">
                                 {{ $user->is_active ? 'Active' : 'Inactive' }}
-                            </button>
-                        </form>
-                    @else
-                        <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-secondary' }}">
-                            {{ $user->is_active ? 'Active' : 'Inactive' }}
-                        </span>
-                    @endif
-                </td>
+                            </label>
+                        </div>
+                    </form>
+                @else
+                    <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-secondary' }}">
+                        {{ $user->is_active ? 'Active' : 'Inactive' }}
+                    </span>
+                @endif
+            </td>
+
                 <td>
                     <!-- Tombol buka modal -->
                     <button type="button" class="btn btn-sm btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#editModal-{{ $user->npk }}">
